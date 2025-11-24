@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>EduBot</title>
+</head>
+<body>
+  <h1>EduBot</h1>
+
+  <select id="model">
+    <option value="chatgpt">ChatGPT</option>
+    <option value="gemini">Gemini</option>
+  </select>
+
+  <input id="msg" placeholder="Ask anything..." />
+  <button onclick="send()">Send</button>
+
+  <p id="reply"></p>
+
+<script>
+async function send() {
+  const text = document.getElementById("msg").value;
+  const model = document.getElementById("model").value;
+
+  const endpoint = model === "chatgpt" ? "/api/chatgpt" : "/api/gemini";
+
+  const res = await fetch(endpoint, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ message: text })
+  });
+
+  const data = await res.json();
+  document.getElementById("reply").innerText = data.reply;
+}
+</script>
+</body>
+</html>
